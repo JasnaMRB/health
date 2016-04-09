@@ -1,0 +1,21 @@
+version: '2'
+services:
+    health-app:
+        image: health
+        external_links:
+            - health-postgresql:postgresql
+            - health-elasticsearch:elasticsearch
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod
+            - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/health
+            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=elasticsearch:9300
+        ports:
+            - 8080:8080
+    health-postgresql:
+        extends:
+            file: postgresql.yml
+            service: health-postgresql
+    health-elasticsearch:
+        extends:
+            file: elasticsearch.yml
+            service: health-elasticsearch
